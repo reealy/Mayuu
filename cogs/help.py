@@ -131,9 +131,18 @@ class Help(commands.Cog):
 
 				elif args == "time":
 					name = "Time"
-					content = "Gives the time in the timezone of the user."
+					content = "Gives the time (at UTC+0)."
 					usage = "!time"
 					example = "!time"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "ping":
+					name = "Ping"
+					content = "Gives the ping in ms."
+					usage = "!ping"
+					example = "!ping"
 
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)

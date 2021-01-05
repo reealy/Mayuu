@@ -32,5 +32,15 @@ class Games(commands.Cog):
 					await ctx.send(f'Ladies and gentlemen, {ctx.author} got it. My number was: {randomnum}')
 					break
 
+	@commands.command(aliases=['roll-duel'])
+	async def rollduel(self,ctx):
+		pass
+
+	@commands.command()
+	async def sequencer(self,ctx,*,difficulty="n"):
+		print(difficulty)
+		pass
+
+
 def setup(client):
 	client.add_cog(Games(client))

@@ -6,6 +6,7 @@ fun_command_lst = [
         'inspire',
         'quote',
         'someone',
+				'yesno',
         ]
 
 utility_command_lst = [
@@ -13,13 +14,14 @@ utility_command_lst = [
         'delay',
         'infoserv',
         'time',
+				'ping',
 				'counter',
         ]
 
 game_command_lst = [
 				'guess',
 				'roll-duel',
-				'roll-battle',
+				'sequencer',
 ]
 
 emotion_msg=[
@@ -54,6 +56,25 @@ greeting_msg=[
 
 cute_msg=[
 'aww~','you\'re cute too~',"no u ♥",'fufufu~','u too ♥',"♥","big blobheart for you ♥",'how cute~','kawaii~',"😳"
+]
+
+yesno_msg=[
+	'yes',
+	'no',
+	'probably yes',
+	'probably no',
+	'mmm...',
+	'definitively no',
+	'YES YES YES',
+	'well perhaps...',
+	'no way',
+	'not so certain',
+	'questionnable',
+	'most unlikely',
+	'bruh',
+	'no doubt',
+	'certainly',
+	'unthinkable',
 ]
 
 choosen_msg =[]

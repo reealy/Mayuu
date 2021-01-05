@@ -128,6 +128,20 @@ class Fun(commands.Cog):
 		error_example = '!quote user'
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
+	
+	@commands.command()
+	async def yesno(self, ctx,*msg):
+		data = cute_msg
+		msg = random.choice(data)
+		await ctx.channel.send(msg)
+
+	@yesno.error
+	async def yesno_error(self,ctx,error):
+
+		error_usage = '!yesno <text>'
+		error_example = '!yesno Am I an nice person Mayuu ?'
+		embed = generate_error(error_usage,error_example)
+		await ctx.send(embed=embed)
 
 def setup(client):
 	client.add_cog(Fun(client))
