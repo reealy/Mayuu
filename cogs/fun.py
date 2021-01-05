@@ -131,7 +131,7 @@ class Fun(commands.Cog):
 	
 	@commands.command()
 	async def yesno(self, ctx,*msg):
-		data = cute_msg
+		data = yesno_msg
 		msg = random.choice(data)
 		await ctx.channel.send(msg)
 
