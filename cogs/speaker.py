@@ -32,7 +32,7 @@ class Utility(commands.Cog):
 		if (ctx.author==self.client.user or ctx.content.startswith(os.getenv('PREFIX'))):
 			return
 
-		words_list=[['mayu'],['cute','cutie','luv','love'],['hey','hi','hello'],['marry','date']]
+		words_list=[['mayu'],['cute','cutie'],['hey','hi','hello'],['marry','date'],['do you'],['me'],['luv','love','liek','like']]
 		weight = 0
 
 		for i in range(len(words_list)):
@@ -45,7 +45,7 @@ class Utility(commands.Cog):
 		if weight == 1:
 			async with ctx.channel.typing():
 				current_date = datetime.datetime.utcnow() - datetime.timedelta(days = random.randint(0, 180))
-				message = await ctx.channel.history(limit=250, after=current_date).flatten()
+				message = await ctx.channel.history(limit=300, after=current_date).flatten()
 				f_message = []
 
 				for msg in message:
@@ -72,9 +72,17 @@ class Utility(commands.Cog):
 				await ctx.channel.send(msg)
 				# print("contains maya and hey")
 
-		elif weight == 17 or weight == 21:
+		elif weight == 17 or weight == 21 or weight == 102 or weight == 54 or weight == 50 or weight == 106 or weight == 53:
 			async with ctx.channel.typing():
 				msg = "\U0001F633 \U0001F633 \U0001F633"
+				await asyncio.sleep(1)
+				await ctx.channel.send(msg)
+
+		elif weight == 111 or weight == 86 or weight == 62 or weight == 95:
+			async with ctx.channel.typing():
+				data = emotion_msg
+				emotion = random.choice(data)
+				msg = f'I feel {emotion} for you'
 				await asyncio.sleep(1)
 				await ctx.channel.send(msg)
 
@@ -95,6 +103,7 @@ class Utility(commands.Cog):
 				self.cache_msg = ctx.content
 				self.cache_user = [ctx.author.id]
 	
+	'''
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self,reaction,user):
 		try:
@@ -102,6 +111,7 @@ class Utility(commands.Cog):
 			#await asyncio.wait_for(eternity(), timeout=60)
 		except asyncio.TimeoutError:
 			print('timeout!')
+	'''
 
 def setup(client):
 	client.add_cog(Utility(client))

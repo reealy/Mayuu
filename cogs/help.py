@@ -102,6 +102,15 @@ class Help(commands.Cog):
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)
 
+				elif args == "yesno":
+					name = "Yes/No"
+					content = "Answers you honestly with a yes or no answer"
+					usage = "!yesno <text>"
+					example = "!yesno Will today my lucky day?"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
 				elif args == "delay":
 					name = "Delay"
 					content = "Tag the user after a specified amount of time. \nTime could be either in seconds (s), minutes (min), hours (h) or days (d).\n Removing the message will cancel the command."
