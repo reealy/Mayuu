@@ -156,7 +156,7 @@ class Utility(commands.Cog):
 		await ctx.send(f'Ping : {latency}ms')
 		pass
 
-	@delay.error
+	@ping.error
 	async def ping_error(self,ctx,error):
 
 		error_usage = '!ping'
