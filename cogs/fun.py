@@ -87,7 +87,7 @@ class Fun(commands.Cog):
 	@commands.command()
 	async def quote(self,ctx,*text):
 		current_date = datetime.datetime.utcnow() - datetime.timedelta(days = random.randint(0, 180))
-		message = await ctx.channel.history(limit=250, after=current_date).flatten()
+		message = await ctx.channel.history(limit=500, after=current_date).flatten()
 		f_message = []
 		f_user_message = []
 		user = ''

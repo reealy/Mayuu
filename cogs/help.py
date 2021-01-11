@@ -46,8 +46,9 @@ class Help(commands.Cog):
 			await ctx.send(content="List of commands : (Type `!help <command>` for usage)",embed=embed)
 
 		elif args:
-			command_list = sum([fun_command_lst,utility_command_lst], [])
+			command_list = sum([fun_command_lst,utility_command_lst,game_command_lst],[])
 			if args in command_list:
+				print(args)
 				if args == "help":
 					name = "Help"
 					content = "List all commands avaliable. \nAdding a valid command will give the help of that command."
@@ -155,13 +156,28 @@ class Help(commands.Cog):
 
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)
+
+				elif args == "guess":
+					name = "Guess"
+					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1 and 10.\n**Normal (or n) :** 8 Attempts, Number between 1 and 100.\n**Hard (or h) :** 12 Attempts, Number between 1 and 100.\n\n*There's a automatic timeout after 30 seconds.*"
+					usage = "!guess <difficulty>"
+					example = "!guess Normal"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				else:
+					embed.colour = discord.Colour(0xFF0000)
+					embed.title = "❌  Error 404 :"
+					embed.description = "No help found!"
+					await ctx.send(embed=embed)
+					return
 			
 			else:
 				embed.colour = discord.Colour(0xFF0000)
-				embed.title = "❌ Error 404 :"
-				embed.description = "No help found!"
+				embed.title = "❌  Command not found! :"
+				embed.description = "Type !help for a list of avaliable commands."
 				await ctx.send(embed=embed)
-				return
 
 		else:
 			error_usage = '!help'

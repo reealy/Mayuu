@@ -45,7 +45,7 @@ class Utility(commands.Cog):
 		if weight == 1:
 			async with ctx.channel.typing():
 				current_date = datetime.datetime.utcnow() - datetime.timedelta(days = random.randint(0, 180))
-				message = await ctx.channel.history(limit=300, after=current_date).flatten()
+				message = await ctx.channel.history(limit=500, after=current_date).flatten()
 				f_message = []
 
 				for msg in message:
