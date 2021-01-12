@@ -177,7 +177,7 @@ class Help(commands.Cog):
 
 				elif args == "roll-duel" or args == "rollduel":
 					name = "Roll-Duel"
-					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins."
+					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins.\n*Note : The tagged user always start rolling first.*\n\n*There's a automatic timeout after 30 seconds.*"
 					usage = "!roll-duel (@someone) <rolls to do> <size>"
 					example = "!roll-duel @Mayuu 3 10"
 

@@ -141,30 +141,245 @@ class Games(commands.Cog):
 				lst += [random.randint(1,size)]
 			return lst
 		
-		def get_embed(user,ping_user,roll1,roll2):
+		def get_embed(user,tag_user,roll1,roll2,msg1,msg2):
 
 			embed = discord.Embed()
 			embed.colour = discord.Colour(0x1914FF)
 			embed.title = "Roll-duel  🔫"
-			embed.description = f"**{user}** vs. **{ping_user}**"
-			embed.add_field(name = f"**{user}**", value = "", inline = True)
-			embed.add_field(name = f"**{ping_user}**", value = "", inline = True)
+			embed.description = f"**{user.mention}** vs. **{tag_user.mention}**"
+			embed.add_field(name = f"**{user.name}**", value = msg1, inline = True)
+			embed.add_field(name = f"**{tag_user.name}**", value = msg2, inline = True)
 			return embed
 
-		if len(ctx.message.mentions) == 1 and (rolls < 11 and rolls > 0):
-			user_id = ctx.message.author.id
-			tag_user_id = ctx.message.mentions[0].id
+		def rolling_str(roll1,roll2,status,iteration=0,iteration_status=False):
+			str1 = ""
+			str2 = ""
+			if status == 0:
+				for i in range(len(roll1)):
+					str1 += "**🎲**\n"
+					str2 += "**🎲**\n"
+				str1 += "Total : 0"
+				str2 += "Total : 0"
 
-			if tag_user_id == self.client.user.id:
+			elif status == 1:
+				for i in range(iteration):
+					str1 += f"**{roll1[i]}**\n"
+					str2 += "**🎲**\n"
+
+				if iteration_status:
+					str1 += "...\n"
+					str2 +=  "**🎲**\n"
+				else:
+					str1 += f"**{roll1[iteration]}**\n"
+					str2 += "**🎲**\n"
+
+				for j in range(len(roll1)-iteration-1):
+					str1 += "**🎲**\n"
+					str2 += "**🎲**\n"
+				
+				if iteration_status:
+					str1 += f"Total : **{sum(roll1[:iteration])}**"
+					str2 += "Total : 0"
+				else:
+					str1 += f"Total : **{sum(roll1[:iteration+1])}**"
+					str2 += "Total : 0"
+
+			elif status == 2:
+				for i in range(len(roll1)):
+					str1 += f"**{roll1[i]}**\n"
+					str2 += "**🎲**\n"
+				str1 += f"Total : **{sum(roll1)}**"
+				str2 += "Total : 0"
+
+			elif status == 3:
+				for i in range(iteration):
+					str1 += f"**{roll1[i]}**\n"
+					str2 += f"**{roll2[i]}**\n"
+
+				if iteration_status:
+					str1 += f"**{roll1[iteration]}**\n"
+					str2 +=  "...\n"
+				else:
+					str1 += f"**{roll1[iteration]}**\n"
+					str2 += f"**{roll2[iteration]}**\n"
+
+				for j in range(len(roll1)-iteration-1):
+					str1 += f"**{roll1[j+iteration+1]}**\n"
+					str2 += "**🎲**\n"
+				
+				if iteration_status:
+					str1 += f"Total : **{sum(roll1)}**"
+					str2 += f"Total : **{sum(roll2[:iteration])}**"
+				else:
+					str1 += f"Total : **{sum(roll1)}**"
+					str2 += f"Total : **{sum(roll2[:iteration+1])}**"
+
+			elif status == 4:
+				for i in range(len(roll1)):
+					str1 += f"**{roll1[i]}**\n"
+					str2 += f"**{roll2[i]}**\n"
+				str1 += f"Total : **{sum(roll1)}**"
+				str2 += f"Total : **{sum(roll2)}**"
+			else:
+				raise ValueError('Something wrong happened!')
+			return str1, str2
+
+		if len(ctx.message.mentions) == 1 and (rolls < 11 and rolls > 0):
+			user = ctx.message.author
+			tag_user = ctx.message.mentions[0]
+			is_bot = False
+			is_player1_turn = False 
+
+			if tag_user.id == self.client.user.id:
+				is_bot = True
 				print("Mayuu!")
 			
 			roll1 = rolling(rolls,size)
 			roll2 = rolling(rolls,size)
-			print(roll1,roll2)
+			if roll1 > roll2:
+				print("player 2 is winner")
+				winner = tag_user
+				winner_point = sum(roll1)
+				loser = user
+			elif roll1 < roll2:
+				print("player 1 is winner")
+				winner = user
+				winner_point = sum(roll2)
+				loser = tag_user
+			else:
+				winner = "tie"
+				winner_point = sum(roll1)
+				
+
+			msg1, msg2 = rolling_str(roll1,roll2,0)
+			embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+			embed.set_footer(text=f"{tag_user.name}, click on the dice to roll.")
+			msg_id = await ctx.channel.send(embed=embed)
+			await msg_id.add_reaction(str("🎲"))
+			await asyncio.sleep(1)
+
+			if is_bot:
+				while True:
+					await asyncio.sleep(1)
+					for i in range(len(roll1)):
+						msg2, msg1 = rolling_str(roll1,roll2,1,i,True)
+						embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+						embed.set_footer(text=f"{tag_user.name} rolls...  🎲")
+						await msg_id.edit(embed=embed)
+						await asyncio.sleep(1)
+
+						msg2, msg1 = rolling_str(roll1,roll2,1,i,False)
+						embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+						embed.set_footer(text=f"{tag_user.name} rolls...  🎲")
+						await msg_id.edit(embed=embed)
+						await asyncio.sleep(1)
+
+					msg2, msg1 = rolling_str(roll1,roll2,2)
+					embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+					embed.set_footer(text=f"{user.name}, click on the dice to roll.")
+					await msg_id.edit(embed=embed)
+					break
+
+				while True:
+					try:
+						imput = await self.client.wait_for('raw_reaction_add', timeout=30)
+					except:
+						return
+
+					if imput.user_id == user.id:
+						for i in range(len(roll1)):
+							msg2, msg1 = rolling_str(roll1,roll2,3,i,True)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{user.name} rolls...")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+							msg2, msg1 = rolling_str(roll1,roll2,3,i,False)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{user.name} rolls...")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+						msg2, msg1 = rolling_str(roll1,roll2,4)
+						embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+						embed.set_footer(text="Result time ! 🥁")
+						await msg_id.edit(embed=embed)
+				
+						if winner == "tie":
+							result_msg = f'**{user.mention}** and **{tag_user.mention}** made a tie with **{winner_point}** points !'
+						else:
+							result_msg = f'**{winner.mention}** wins against **{loser.mention}** with **{winner_point}** points !'
+						await ctx.channel.send(result_msg)
+						break
+
+					else:
+						pass
+
+			else:
+				while True:
+					try:
+						imput = await self.client.wait_for('raw_reaction_add', timeout=30)
+					except:
+						return
+
+					if imput.user_id == tag_user.id:
+						for i in range(len(roll1)):
+							msg2, msg1 = rolling_str(roll1,roll2,1,i,True)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{tag_user.name} rolls...  🎲")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+							msg2, msg1 = rolling_str(roll1,roll2,1,i,False)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{tag_user.name} rolls...  🎲")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+						msg2, msg1 = rolling_str(roll1,roll2,2)
+						embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+						embed.set_footer(text=f"{user.name}, click on the dice to roll.")
+						await msg_id.edit(embed=embed)
+						break
+				while True:
+					try:
+						imput = await self.client.wait_for('raw_reaction_add', timeout=30)
+					except:
+						return
+				
+					if imput.user_id == user.id:
+						for i in range(len(roll1)):
+							msg2, msg1 = rolling_str(roll1,roll2,3,i,True)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{user.name} rolls...")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+							msg2, msg1 = rolling_str(roll1,roll2,3,i,False)
+							embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+							embed.set_footer(text=f"{user.name} rolls...")
+							await msg_id.edit(embed=embed)
+							await asyncio.sleep(1)
+
+						msg2, msg1 = rolling_str(roll1,roll2,4)
+						embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
+						embed.set_footer(text="Result time ! 🥁")
+						await msg_id.edit(embed=embed)
+				
+						if winner == "tie":
+							result_msg = f'**{user.mention}** and **{tag_user.mention}** made a tie with **{winner_point}** points !'
+						else:
+							result_msg = f'**{winner.mention}** wins against **{loser.mention}** with **{winner_point}** points !'
+						await ctx.channel.send(result_msg)
+						break
+
+					else:
+						pass
 
 		else:
 			raise ValueError("Invalid command usage!") 
 	
+
 	@rollduel.error
 	async def rollduel_error(self,ctx,error):
 		print(error)
@@ -173,6 +388,7 @@ class Games(commands.Cog):
 		error_example = '!roll-duel @Mayuu 3 10'
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
+
 
 	@commands.command()
 	async def sequencer(self,ctx,*,difficulty="n"):
