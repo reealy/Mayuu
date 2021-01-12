@@ -140,6 +140,16 @@ class Games(commands.Cog):
 			for i in range(rolls):
 				lst += [random.randint(1,size)]
 			return lst
+		
+		def get_embed(user,ping_user,roll1,roll2):
+
+			embed = discord.Embed()
+			embed.colour = discord.Colour(0x1914FF)
+			embed.title = "Roll-duel  🔫"
+			embed.description = f"**{user}** vs. **{ping_user}**"
+			embed.add_field(name = f"**{user}**", value = "", inline = True)
+			embed.add_field(name = f"**{ping_user}**", value = "", inline = True)
+			return embed
 
 		if len(ctx.message.mentions) == 1 and (rolls < 11 and rolls > 0):
 			user_id = ctx.message.author.id
@@ -154,22 +164,34 @@ class Games(commands.Cog):
 
 		else:
 			raise ValueError("Invalid command usage!") 
+	
+	@rollduel.error
+	async def rollduel_error(self,ctx,error):
+		print(error)
+
+		error_usage = '!roll-duel (@someone) <rolls to do> <size>'
+		error_example = '!roll-duel @Mayuu 3 10'
+		embed = generate_error(error_usage,error_example)
+		await ctx.send(embed=embed)
 
 	@commands.command()
 	async def sequencer(self,ctx,*,difficulty="n"):
-
 		def check_diff(difficulty):
-			if difficulty == "number" or difficulty == "n":
+			if difficulty.lower() == "number" or difficulty.lower() == "n":
 				lettres = ['0','1','2','3','4','5','6','7','8','9']
-				char = [":zero:",":one:",":two:",":three:",":four:",":five:",":six:",":seven:",":eight:",":nine:"]
-			elif difficulty == "taiko" or difficulty == "t":
+				char = ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
+				mode = "Numbers"
+			elif difficulty.lower() == "taiko" or difficulty.lower() == "t":
 				lettres = ['d','k']
 				char = ["🔴","🔵"]
-			elif difficulty == "alphabet" or difficulty == "letter" or difficulty == "l":
-				lettres = ['a','b','c','d','e','f','g','h','i','j','k','m','n','o','p','q','r','s','t','u','w','x','y','z']
+				mode = "Taiko"
+			elif difficulty.lower() == "alphabet" or difficulty.lower() == "letter" or difficulty.lower() == "l" or difficulty.lower() == "a":
+				lettres = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+				char = [":regional_indicator_a:",":regional_indicator_b:",":regional_indicator_c:",":regional_indicator_d:",":regional_indicator_e:",":regional_indicator_f:",":regional_indicator_g:",":regional_indicator_h:",":regional_indicator_i:",":regional_indicator_j:",":regional_indicator_k:",":regional_indicator_l:",":regional_indicator_m:",":regional_indicator_n:",":regional_indicator_o:",":regional_indicator_p:",":regional_indicator_q:",":regional_indicator_r:",":regional_indicator_s:",":regional_indicator_t:",":regional_indicator_u:",":regional_indicator_v:",":regional_indicator_w:",":regional_indicator_x:",":regional_indicator_y:",":regional_indicator_z:"]
+				mode = "Alphabet"
 			else:
 				raise ValueError('Invalid mode')
-			return lettres,char
+			return lettres,char,mode
 
 		def get_answer_id(lettres,lvl):
 			answer = []
@@ -183,55 +205,99 @@ class Games(commands.Cog):
 			for i in answer_id:
 				check += str(mode[i])
 
+			print(check == answer,answer,check)
 			if check == answer:
 				return True
 			else:
 				return False
 
-		def get_embed(stored_answer):
+		def get_embed(answer,censor,level,char,mode):
+
+			ans_msg = "\u200b"
+			lvl_msg = "\u200b"
+			solution = ""
+
+			for i in range(len(answer)-1):
+				for j in range(len(answer[i])):
+					ans_msg += f"{char[answer[i][j]]}"
+				ans_msg += "\n"
+
+			for i in range(len(level)):
+				lvl_msg += f"{level[i]}\n"
+
+			if censor == True:
+				for i in range(len(answer)):
+					solution += "⬛"
+			else:
+				for i in range(len(answer)):
+					solution += char[answer[len(answer)-1][i]]
+
 			embed = discord.Embed()
 			embed.colour = discord.Colour(0x1914FF)
-			embed.description = answer
-			embed.add_field(name = "Levels :", value = f'Level **1**', inline = True)
-			embed.add_field(name = "Answers :", value = ' ', inline = True)
+			embed.title = "Sequencer  🧩"
+			embed.description = f"**Type : {mode}**\n*Will you not forget?*\n\n{solution}"
+			embed.add_field(name = "Level", value = f"**{lvl_msg}**", inline = True)
+			embed.add_field(name = "Answers", value = f"{ans_msg}", inline = True)
 			return embed
 
-		def censor(embed,lvl):
-			msg = ''
-			for i in range(lvl):
-				msg += "⬛"
-			return msg
-
-		mode,char = check_diff(difficulty)
+		lettres,char,mode = check_diff(difficulty)
 
 		lvl = 1
 		timeout = 1.0
-		answer_id = get_answer_id(mode,lvl)
-		stored_answer = answer_id
-		'''
-		embed = create_embed(answer)
-		msg_id = ctx.send(f'**{ctx.message.author}** plays Sequencer',embed=embed)
+		answer_id = get_answer_id(lettres,lvl)
+		stored_answer = [answer_id]
+		stored_lvl = [lvl]
+		user_id = ctx.message.author.id
+		waiting_for = False
+		embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+		msg_id = await ctx.channel.send(embed=embed)
 		await asyncio.sleep(timeout)
+		waiting_for = True
+		embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+		await msg_id.edit(embed=embed)
 
-		await msg_id.edit(f'**{ctx.message.author}** plays Sequencer',embed=embed)
-		'''
 		while True:
-			print(answer_id,stored_answer,lvl)
 			try:
-				user_answer = await self.client.wait_for('message', timeout=timeout*4)
+				imput = await self.client.wait_for('message', timeout=timeout*3)
 			except:
+				embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+				embed.set_footer(text="Timeout!\nHope you can answer faster next time!")
+				await msg_id.edit(embed=embed)
 				print("timeout failed")
 				break
-				
-			if not check_answer(user_answer.content,answer_id,mode):
-				print("wrong answer failed")
-				break
-			else:
 
-				lvl +=1
-				timeout += 0.2
-				answer_id = get_answer_id(mode,lvl)
-				stored_answer.insert(0,answer_id)
+			if imput.author.id == user_id:
+				if not check_answer(imput.content,answer_id,lettres):
+					stored_answer += [answer_id]
+					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+					embed.set_footer(text="Wrong Answer!\nHope you will do better next time!")
+					await msg_id.edit(embed=embed)
+					print("wrong answer failed")
+					break
+				else:
+					lvl +=1
+					timeout += 0.1
+					answer_id = get_answer_id(lettres,lvl)
+					stored_answer += [answer_id]
+					stored_lvl += [lvl]
+					waiting_for = False
+					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+					await msg_id.edit(embed=embed)
+					waiting_for = True
+					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+					await asyncio.sleep(timeout)
+					await msg_id.edit(embed=embed)
+			
+			else:
+				pass
+
+	@sequencer.error
+	async def sequencer_error(self,ctx,error):
+
+		error_usage = '!sequencer <mode>'
+		error_example = '!sequencer Number'
+		embed = generate_error(error_usage,error_example)
+		await ctx.send(embed=embed)
 
 def setup(client):
 	client.add_cog(Games(client))

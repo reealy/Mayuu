@@ -159,9 +159,27 @@ class Help(commands.Cog):
 
 				elif args == "guess":
 					name = "Guess"
-					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1 and 10.\n**Normal (or n) :** 8 Attempts, Number between 1 and 100.\n**Hard (or h) :** 12 Attempts, Number between 1 and 100.\n\n*There's a automatic timeout after 30 seconds.*"
+					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 8 Attempts, Number between 1-100.\n**Hard (or h) :** 12 Attempts, Number between 1-100.\n\n*There's a automatic timeout after 30 seconds.*"
 					usage = "!guess <difficulty>"
 					example = "!guess Normal"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "sequencer":
+					name = "Sequencer"
+					content = "The sequencer memory game. 🧩\nFeatures mutiple modes :\n\n**Number (or n)** Uses numbers between 0-9.\n**Alphabet (or letter/a/l)** Uses alphabet letters between A-Z.\n**Taiko (or t)** Uses the taiko notes from the popular game \"Taiko no Tatsujin\" with d (don) and k (kat).\n\nYou lose if you answer wrong or don't reply in time.\n*Note : Wait for the notes to hide before you send the answer or it will ignore your message.*"
+					usage = "!sequencer <mode>"
+					example = "!sequencer Number"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "roll-duel" or args == "rollduel":
+					name = "Roll-Duel"
+					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins."
+					usage = "!roll-duel (@someone) <rolls to do> <size>"
+					example = "!roll-duel @Mayuu 3 10"
 
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)
