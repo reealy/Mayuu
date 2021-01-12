@@ -159,7 +159,7 @@ class Help(commands.Cog):
 
 				elif args == "guess":
 					name = "Guess"
-					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 8 Attempts, Number between 1-100.\n**Hard (or h) :** 12 Attempts, Number between 1-100.\n\n*There's a automatic timeout after 30 seconds.*"
+					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 8 Attempts, Number between 1-100.\n**Hard (or h) :** 12 Attempts, Number between 1-1000.\n\n*There's an automatic timeout after 30 seconds.*"
 					usage = "!guess <difficulty>"
 					example = "!guess Normal"
 
@@ -177,7 +177,7 @@ class Help(commands.Cog):
 
 				elif args == "roll-duel" or args == "rollduel":
 					name = "Roll-Duel"
-					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins.\n*Note : The tagged user always start rolling first.*\n\n*There's a automatic timeout after 30 seconds.*"
+					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins.\n*Note : The tagged user always start rolling first.*\n\n*There's an automatic timeout after 30 seconds.*"
 					usage = "!roll-duel (@someone) <rolls to do> <size>"
 					example = "!roll-duel @Mayuu 3 10"
 

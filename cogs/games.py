@@ -79,8 +79,10 @@ class Games(commands.Cog):
 		stored_guess = []
 		stored_attempt = [attempt]
 		stored_hotncold = []
+		previous_imput = None
 		user_id = ctx.message.author.id
 		embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
+		await ctx.channel.send(f"**{ctx.message.author.name}** plays guess")
 		msg_id = await ctx.channel.send(embed=embed)
 
 		while attempt > 0:
@@ -101,6 +103,11 @@ class Games(commands.Cog):
 						stored_attempt += [attempt]	
 						print("Not the guessed number")
 
+					if previous_imput != None:
+						await previous_imput.delete()
+						previous_imput = imput
+					else:
+						previous_imput = imput
 					embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
 					await msg_id.edit(embed=embed)
 
@@ -236,13 +243,13 @@ class Games(commands.Cog):
 			
 			roll1 = rolling(rolls,size)
 			roll2 = rolling(rolls,size)
-			if roll1 > roll2:
-				print("player 2 is winner")
+			if sum(roll1) > sum(roll2):
+				print("player 2 is winner (mayuu)")
 				winner = tag_user
 				winner_point = sum(roll1)
 				loser = user
-			elif roll1 < roll2:
-				print("player 1 is winner")
+			elif sum(roll1) < sum(roll2):
+				print("player 1 is winner (realy0_)")
 				winner = user
 				winner_point = sum(roll2)
 				loser = tag_user
@@ -254,6 +261,7 @@ class Games(commands.Cog):
 			msg1, msg2 = rolling_str(roll1,roll2,0)
 			embed = get_embed(user,tag_user,roll1,roll2,msg1,msg2)
 			embed.set_footer(text=f"{tag_user.name}, click on the dice to roll.")
+			await ctx.channel.send(f"**{user.name}** duels {tag_user.name}!")
 			msg_id = await ctx.channel.send(embed=embed)
 			await msg_id.add_reaction(str("🎲"))
 			await asyncio.sleep(1)
@@ -465,7 +473,9 @@ class Games(commands.Cog):
 		stored_lvl = [lvl]
 		user_id = ctx.message.author.id
 		waiting_for = False
+		previous_imput = None
 		embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
+		await ctx.channel.send(f"**{ctx.message.author.name}** Plays Sequencer!")
 		msg_id = await ctx.channel.send(embed=embed)
 		await asyncio.sleep(timeout)
 		waiting_for = True
@@ -476,6 +486,7 @@ class Games(commands.Cog):
 			try:
 				imput = await self.client.wait_for('message', timeout=timeout*3)
 			except:
+				stored_answer += [answer_id]
 				embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
 				embed.set_footer(text="Timeout!\nHope you can answer faster next time!")
 				await msg_id.edit(embed=embed)
@@ -498,8 +509,15 @@ class Games(commands.Cog):
 					stored_lvl += [lvl]
 					waiting_for = False
 					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
-					await msg_id.edit(embed=embed)
 					waiting_for = True
+					if previous_imput != None:
+						await previous_imput.delete()
+						previous_imput = imput
+					else:
+						previous_imput = imput
+				
+					await msg_id.edit(embed=embed)
+
 					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
 					await asyncio.sleep(timeout)
 					await msg_id.edit(embed=embed)
@@ -510,6 +528,7 @@ class Games(commands.Cog):
 	@sequencer.error
 	async def sequencer_error(self,ctx,error):
 
+		print(error)
 		error_usage = '!sequencer <mode>'
 		error_example = '!sequencer Number'
 		embed = generate_error(error_usage,error_example)
