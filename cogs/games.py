@@ -40,7 +40,7 @@ class Games(commands.Cog):
 				attempt = 15
 			elif difficulty.lower() == "ex" or difficulty.lower() == "expert":
 				answer = random.randint(1,100000)
-				difficulty_type = "Hard Mode"	
+				difficulty_type = "Expert Mode"	
 				attempt = 20
 			else:
 				raise ValueError('Invalid mode')
