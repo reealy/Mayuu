@@ -29,11 +29,11 @@ class Games(commands.Cog):
 			elif difficulty.lower() == "n" or difficulty.lower() == "normal":
 				answer = random.randint(1,100)
 				difficulty_type = "Normal Mode"
-				attempt = 6
+				attempt = 7
 			elif difficulty.lower() == "h" or difficulty.lower() == "hard":
 				answer = random.randint(1,1000)
 				difficulty_type = "Hard Mode"	
-				attempt = 8
+				attempt = 10
 			else:
 				raise ValueError('Invalid mode')
 			return answer,attempt,difficulty_type
@@ -104,8 +104,11 @@ class Games(commands.Cog):
 						print("Not the guessed number")
 
 					if previous_imput != None:
-						await previous_imput.delete()
-						previous_imput = imput
+						try:
+							await previous_imput.delete()
+							previous_imput = imput
+						except:
+							pass
 					else:
 						previous_imput = imput
 					embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
@@ -511,8 +514,11 @@ class Games(commands.Cog):
 					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
 					waiting_for = True
 					if previous_imput != None:
-						await previous_imput.delete()
-						previous_imput = imput
+						try:
+							await previous_imput.delete()
+							previous_imput = imput
+						except:
+							pass
 					else:
 						previous_imput = imput
 				

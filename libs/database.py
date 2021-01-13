@@ -56,7 +56,11 @@ yesno_msg=[
 ]
 
 humph_msg=[
-	
+	'baka',
+	'who said that?',
+	"😡",
+	'eehhh??',
+	'man',
 ]
 
 choosen_msg =[]

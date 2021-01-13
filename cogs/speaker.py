@@ -28,7 +28,8 @@ class Utility(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self,ctx):
-		print(f'[{datetime.datetime.now()}] in {ctx.guild.name} <{ctx.author.id}> {ctx.author} : {ctx.content}')
+		if ctx.guild != None:
+			print(f'[{datetime.datetime.now()}] in {ctx.guild.name} <{ctx.author.id}> {ctx.author} : {ctx.content}')
 		if (ctx.author==self.client.user or ctx.content.startswith(os.getenv('PREFIX'))):
 			return
 
