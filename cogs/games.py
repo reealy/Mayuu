@@ -34,6 +34,14 @@ class Games(commands.Cog):
 				answer = random.randint(1,1000)
 				difficulty_type = "Hard Mode"	
 				attempt = 10
+			elif difficulty.lower() == "i" or difficulty.lower() == "insane":
+				answer = random.randint(1,10000)
+				difficulty_type = "Insane Mode"	
+				attempt = 15
+			elif difficulty.lower() == "ex" or difficulty.lower() == "extreme":
+				answer = random.randint(1,100000)
+				difficulty_type = "Hard Mode"	
+				attempt = 20
 			else:
 				raise ValueError('Invalid mode')
 			return answer,attempt,difficulty_type
