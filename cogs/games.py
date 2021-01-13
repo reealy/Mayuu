@@ -38,7 +38,7 @@ class Games(commands.Cog):
 				answer = random.randint(1,10000)
 				difficulty_type = "Insane Mode"	
 				attempt = 15
-			elif difficulty.lower() == "ex" or difficulty.lower() == "extreme":
+			elif difficulty.lower() == "ex" or difficulty.lower() == "expert":
 				answer = random.randint(1,100000)
 				difficulty_type = "Hard Mode"	
 				attempt = 20

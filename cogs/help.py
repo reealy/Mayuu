@@ -159,7 +159,7 @@ class Help(commands.Cog):
 
 				elif args == "guess":
 					name = "Guess"
-					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 7 Attempts, Number between 1-100.\n**Hard (or h) :** 10 Attempts, Number between 1-1000.\n**Insane (or i) :** 15 Attempts, Number between 1-10000.\n**Extreme (or ex) :** 20 Attempts, Number between 1-100000.\n\n*There's an automatic timeout after 30 seconds.*"
+					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 7 Attempts, Number between 1-100.\n**Hard (or h) :** 10 Attempts, Number between 1-1000.\n**Insane (or i) :** 15 Attempts, Number between 1-10000.\n**Expert (or ex) :** 20 Attempts, Number between 1-100000.\n\n*There's an automatic timeout after 30 seconds.*"
 					usage = "!guess <difficulty>"
 					example = "!guess Normal"
 
