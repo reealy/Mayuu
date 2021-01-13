@@ -32,7 +32,7 @@ class Utility(commands.Cog):
 		if (ctx.author==self.client.user or ctx.content.startswith(os.getenv('PREFIX'))):
 			return
 
-		words_list=[['mayu'],['cute','cutie'],['hey','hi','hello'],['marry','date'],['do you'],['me'],['luv','love','liek','like']]
+		words_list=[['mayu'],['cute','cutie'],['hey','hi','hello'],['marry','married','date'],['do you'],['me'],['luv','love','liek','like'],['not','hate','dislike']]
 		weight = 0
 
 		for i in range(len(words_list)):
@@ -72,7 +72,7 @@ class Utility(commands.Cog):
 				await ctx.channel.send(msg)
 				# print("contains maya and hey")
 
-		elif weight == 17 or weight == 21 or weight == 102 or weight == 54 or weight == 50 or weight == 106 or weight == 53:
+		elif weight == 17 or weight == 21 or weight == 102 or weight == 54 or weight == 50 or weight == 106 or weight == 53 or weight == 26:
 			async with ctx.channel.typing():
 				msg = "\U0001F633 \U0001F633 \U0001F633"
 				await asyncio.sleep(1)
@@ -85,6 +85,22 @@ class Utility(commands.Cog):
 				msg = f'I feel {emotion} for you'
 				await asyncio.sleep(1)
 				await ctx.channel.send(msg)
+
+		elif weight == 69 or weight == 121 or weight == 78:
+			async with ctx.channel.typing():
+				data = humph_msg
+				msg = random.choice(data)
+				await asyncio.sleep(1)
+				await ctx.channel.send(msg)
+				# print("contains maya and hey")
+
+		elif weight == 101:
+			async with ctx.channel.typing():
+				data = yesno_msg
+				msg = random.choice(data)
+				await asyncio.sleep(1)
+				await ctx.channel.send(msg)
+				# print("contains maya and hey")
 
 		else:
 			if (self.cache_msg == ctx.content and ctx.author.id not in self.cache_user):

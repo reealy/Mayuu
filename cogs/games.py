@@ -29,11 +29,11 @@ class Games(commands.Cog):
 			elif difficulty.lower() == "n" or difficulty.lower() == "normal":
 				answer = random.randint(1,100)
 				difficulty_type = "Normal Mode"
-				attempt = 8
+				attempt = 6
 			elif difficulty.lower() == "h" or difficulty.lower() == "hard":
 				answer = random.randint(1,1000)
 				difficulty_type = "Hard Mode"	
-				attempt = 12
+				attempt = 8
 			else:
 				raise ValueError('Invalid mode')
 			return answer,attempt,difficulty_type
@@ -128,7 +128,7 @@ class Games(commands.Cog):
 				pass
 		
 		embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
-		embed.set_footer(text="Seems like it's Game Over...")
+		embed.set_footer(text=f"Seems like it's Game Over...\nThe answer was {answer}.")
 		await msg_id.edit(embed=embed)
 		print("out of attempts!")
 
