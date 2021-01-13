@@ -11,7 +11,7 @@ def generate_error(usage,example):
 	embed.title = f'{error_message}'
 	embed.add_field(name = "Usage :", value = f"`{error_usage}`", inline = False)
 	embed.add_field(name = "Example :", value = f"`{error_example}`", inline = True)
-	embed.set_footer(text="Type !help delay for more information about this command.")
+	embed.set_footer(text="Type !help <command> for more information about this command.")
 	return embed
 
 def generate_help(name,content,usage,example):

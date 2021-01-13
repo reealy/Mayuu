@@ -51,20 +51,17 @@ class Utility(commands.Cog):
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
 
+	
 	@commands.command()
-	async def time(self,ctx,error):
-		t = datetime.datetime.now()
-		d = t.strftime("%Y-%m-%d %H:%M:%S")
-		o = datetime.time.altzone
-		if (o>=0):
-			s = "+"
-		else :
-			s = ""
-		await ctx.send(f'UTC{s}{o} : {d}')
+	async def time(self,ctx):
+		m = ctx.message.created_at
+		t = m.strftime('%d/%m/%Y %H:%M:%S')
+		await ctx.send(f'UTC+0: {t}')
 
 	@time.error
 	async def time_error(self,ctx,error):
 
+		print(error)
 		error_usage = '!time'
 		error_example = '!time'
 		embed = generate_error(error_usage,error_example)
@@ -87,7 +84,7 @@ class Utility(commands.Cog):
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
 
-	@commands.command()
+	@commands.command(aliases=['reminder','remind-me','timer'])
 	async def delay(self, ctx,*text):
 		embed = discord.Embed()
 		embed.colour = discord.Colour(0x1914FF)
@@ -153,6 +150,19 @@ class Utility(commands.Cog):
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
 
+	@commands.command()
+	async def ping(self,ctx):
+		latency = round(self.client.latency*1000)
+		await ctx.send(f'Ping : {latency}ms')
+		pass
+
+	@ping.error
+	async def ping_error(self,ctx,error):
+
+		error_usage = '!ping'
+		error_example = '!ping'
+		embed = generate_error(error_usage,error_example)
+		await ctx.send(embed=embed)
 
 def setup(client):
 	client.add_cog(Utility(client))

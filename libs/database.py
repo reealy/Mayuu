@@ -6,6 +6,7 @@ fun_command_lst = [
         'inspire',
         'quote',
         'someone',
+				'yesno',
         ]
 
 utility_command_lst = [
@@ -13,39 +14,18 @@ utility_command_lst = [
         'delay',
         'infoserv',
         'time',
+				'ping',
 				'counter',
         ]
 
 game_command_lst = [
 				'guess',
 				'roll-duel',
-				'roll-battle',
+				'sequencer',
 ]
 
 emotion_msg=[
-'contempt','disgust','revulsion',
-'envy','jealousy',
-'exasperation','frustration',
-'aggravation','agitation','annoyance','grouchiness','grumpiness','irritation',
-'anger','bitterness','dislike','ferocity','fury','hate','hostility','loathing','outrage','rage','resentment','scorn','spite','vengefulness','wrath',
-'torment',
-'alarm','fear','fright','horror','hysteria','mortification','panic','shock','terror',
-'anxiety','apprehension','distress','dread','nervousness','tenseness','uneasiness','worry',
-'amusement','bliss','cheerfulness','delight','ecstasy','elation','enjoyment','euphoria','gaiety','gladness','glee','happiness','jolliness','joviality','joy','jubilation','satisfaction',
-'contentment','pleasure',
-'enthrallment','rapture',
-'eagerness','hope','optimism',
-'Pride','triumph',
-'enthusiasm','excitement','exhilaration','thrill','zeal','zest',
-'adoration','affection','attraction','caring','compassion','fondness','liking','love','sentimentality','tenderness',
-'arousal','desire','infatuation','lust','passion',
-'disappointment','dismay','displeasure',
-'alienation','defeat','dejection','embarrassment','homesickness','humiliation','insecurity','isolation','insult','loneliness','neglect',
-'depression','despair','gloom','glumness','grief','hopelessness','melancholy','misery','sadness','sorrow','unhappiness',
-'guilt','regret','remorse','shame',
-'agony','anguish','hurt','suffering',
-'pity','sympathy',
-'amazement','astonishment','surprise'
+'worthless','embarrassed','hopeful','resentful','satisfied','inspired','motivated','insecure','love','frustrated','peaceful','amazed','relieved','bored','envious','eager','comfortable','grieving','nervous','excited','terrified','depressed','happy','disgusted','jealous','annoyed','scared','silly','energetic','content','stupid','determined','disdain','sad','proud','lonely','furious','foolish','anxious','uncomfortable','shocked','inadequate','miserable','worried','conscious','hurt','joy','angry','ashamed',
 ]
 
 greeting_msg=[
@@ -54,6 +34,25 @@ greeting_msg=[
 
 cute_msg=[
 'aww~','you\'re cute too~',"no u ♥",'fufufu~','u too ♥',"♥","big blobheart for you ♥",'how cute~','kawaii~',"😳"
+]
+
+yesno_msg=[
+	'yes',
+	'no',
+	'probably yes',
+	'probably no',
+	'mmm...',
+	'definitively no',
+	'YES YES YES',
+	'well perhaps...',
+	'no way',
+	'not so certain',
+	'questionnable',
+	'most unlikely',
+	'bruh',
+	'no doubt',
+	'certainly',
+	'unthinkable',
 ]
 
 choosen_msg =[]

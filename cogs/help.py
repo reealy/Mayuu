@@ -46,8 +46,9 @@ class Help(commands.Cog):
 			await ctx.send(content="List of commands : (Type `!help <command>` for usage)",embed=embed)
 
 		elif args:
-			command_list = sum([fun_command_lst,utility_command_lst], [])
+			command_list = sum([fun_command_lst,utility_command_lst,game_command_lst],[])
 			if args in command_list:
+				print(args)
 				if args == "help":
 					name = "Help"
 					content = "List all commands avaliable. \nAdding a valid command will give the help of that command."
@@ -102,6 +103,15 @@ class Help(commands.Cog):
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)
 
+				elif args == "yesno":
+					name = "Yes/No"
+					content = "Answers you honestly with a yes or no answer"
+					usage = "!yesno <text>"
+					example = "!yesno Will today my lucky day?"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
 				elif args == "delay":
 					name = "Delay"
 					content = "Tag the user after a specified amount of time. \nTime could be either in seconds (s), minutes (min), hours (h) or days (d).\n Removing the message will cancel the command."
@@ -131,19 +141,61 @@ class Help(commands.Cog):
 
 				elif args == "time":
 					name = "Time"
-					content = "Gives the time in the timezone of the user."
+					content = "Gives the time (at UTC+0)."
 					usage = "!time"
 					example = "!time"
 
 					embed = generate_help(name,content,usage,example)
 					await ctx.send(embed=embed)
+
+				elif args == "ping":
+					name = "Ping"
+					content = "Gives the ping in ms."
+					usage = "!ping"
+					example = "!ping"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "guess":
+					name = "Guess"
+					content = "The guess number game. 🎲\nFeatures mutiple difficulty modes :\n\n**Easy (or e) :** 4 Attempts, Number between 1-10.\n**Normal (or n) :** 8 Attempts, Number between 1-100.\n**Hard (or h) :** 12 Attempts, Number between 1-1000.\n\n*There's an automatic timeout after 30 seconds.*"
+					usage = "!guess <difficulty>"
+					example = "!guess Normal"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "sequencer":
+					name = "Sequencer"
+					content = "The sequencer memory game. 🧩\nFeatures mutiple modes :\n\n**Number (or n)** Uses numbers between 0-9.\n**Alphabet (or letter/a/l)** Uses alphabet letters between A-Z.\n**Taiko (or t)** Uses the taiko notes from the popular game \"Taiko no Tatsujin\" with d (don) and k (kat).\n\nYou lose if you answer wrong or don't reply in time.\n*Note : Wait for the notes to hide before you send the answer or it will ignore your message.*"
+					usage = "!sequencer <mode>"
+					example = "!sequencer Number"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				elif args == "roll-duel" or args == "rollduel":
+					name = "Roll-Duel"
+					content = "The roll-duel game. 🔫\nTag a user to duel him for a roll battle! The user with the most total points wins.\n*Note : The tagged user always start rolling first.*\n\n*There's an automatic timeout after 30 seconds.*"
+					usage = "!roll-duel (@someone) <rolls to do> <size>"
+					example = "!roll-duel @Mayuu 3 10"
+
+					embed = generate_help(name,content,usage,example)
+					await ctx.send(embed=embed)
+
+				else:
+					embed.colour = discord.Colour(0xFF0000)
+					embed.title = "❌  Error 404 :"
+					embed.description = "No help found!"
+					await ctx.send(embed=embed)
+					return
 			
 			else:
 				embed.colour = discord.Colour(0xFF0000)
-				embed.title = "❌ Error 404 :"
-				embed.description = "No help found!"
+				embed.title = "❌  Command not found! :"
+				embed.description = "Type !help for a list of avaliable commands."
 				await ctx.send(embed=embed)
-				return
 
 		else:
 			error_usage = '!help'

@@ -86,8 +86,8 @@ class Fun(commands.Cog):
 
 	@commands.command()
 	async def quote(self,ctx,*text):
-		current_date = datetime.datetime.utcnow() - datetime.timedelta(days = random.randint(0, 180))
-		message = await ctx.channel.history(limit=250, after=current_date).flatten()
+		current_date = datetime.datetime.utcnow() - datetime.timedelta(days = random.randint(0, 90))
+		message = await ctx.channel.history(limit=300, after=current_date).flatten()
 		f_message = []
 		f_user_message = []
 		user = ''
@@ -126,6 +126,20 @@ class Fun(commands.Cog):
 
 		error_usage = '!quote <user>'
 		error_example = '!quote user'
+		embed = generate_error(error_usage,error_example)
+		await ctx.send(embed=embed)
+	
+	@commands.command()
+	async def yesno(self, ctx,*msg):
+		data = yesno_msg
+		msg = random.choice(data)
+		await ctx.channel.send(msg)
+
+	@yesno.error
+	async def yesno_error(self,ctx,error):
+
+		error_usage = '!yesno <text>'
+		error_example = '!yesno Am I an nice person Mayuu ?'
 		embed = generate_error(error_usage,error_example)
 		await ctx.send(embed=embed)
 
