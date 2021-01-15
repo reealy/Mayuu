@@ -105,6 +105,7 @@ class Utility(commands.Cog):
 
 		else:
 			if (self.cache_msg == ctx.content and ctx.author.id not in self.cache_user):
+				print(self.counter+1)
 				self.counter += 1
 				self.cache_msg = ctx.content
 				self.cache_user += [ctx.author.id]
@@ -119,6 +120,7 @@ class Utility(commands.Cog):
 				self.counter = 0
 				self.cache_msg = ctx.content
 				self.cache_user = [ctx.author.id]
+				print(self.cache_user,self.cache_msg)
 	
 	'''
 	@commands.Cog.listener()

@@ -95,7 +95,7 @@ class Games(commands.Cog):
 
 		while attempt > 0:
 			try:
-				imput = await self.client.wait_for('message', timeout=30)
+				imput = await self.client.wait_for('message', timeout=180)
 			except:
 				print("timeout!")
 				return
@@ -301,7 +301,7 @@ class Games(commands.Cog):
 
 				while True:
 					try:
-						imput = await self.client.wait_for('raw_reaction_add', timeout=30)
+						imput = await self.client.wait_for('raw_reaction_add', timeout=180)
 					except:
 						return
 
