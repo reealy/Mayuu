@@ -29,11 +29,19 @@ class Games(commands.Cog):
 			elif difficulty.lower() == "n" or difficulty.lower() == "normal":
 				answer = random.randint(1,100)
 				difficulty_type = "Normal Mode"
-				attempt = 8
+				attempt = 7
 			elif difficulty.lower() == "h" or difficulty.lower() == "hard":
 				answer = random.randint(1,1000)
 				difficulty_type = "Hard Mode"	
-				attempt = 12
+				attempt = 10
+			elif difficulty.lower() == "i" or difficulty.lower() == "insane":
+				answer = random.randint(1,10000)
+				difficulty_type = "Insane Mode"	
+				attempt = 15
+			elif difficulty.lower() == "ex" or difficulty.lower() == "expert":
+				answer = random.randint(1,100000)
+				difficulty_type = "Expert Mode"	
+				attempt = 20
 			else:
 				raise ValueError('Invalid mode')
 			return answer,attempt,difficulty_type
@@ -87,7 +95,7 @@ class Games(commands.Cog):
 
 		while attempt > 0:
 			try:
-				imput = await self.client.wait_for('message', timeout=30)
+				imput = await self.client.wait_for('message', timeout=180)
 			except:
 				print("timeout!")
 				return
@@ -104,8 +112,11 @@ class Games(commands.Cog):
 						print("Not the guessed number")
 
 					if previous_imput != None:
-						await previous_imput.delete()
-						previous_imput = imput
+						try:
+							await previous_imput.delete()
+							previous_imput = imput
+						except:
+							pass
 					else:
 						previous_imput = imput
 					embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
@@ -128,7 +139,7 @@ class Games(commands.Cog):
 				pass
 		
 		embed = get_embed(stored_guess,stored_attempt,stored_hotncold,difficulty_type)
-		embed.set_footer(text="Seems like it's Game Over...")
+		embed.set_footer(text=f"Seems like it's Game Over...\nThe answer was {answer}.")
 		await msg_id.edit(embed=embed)
 		print("out of attempts!")
 
@@ -290,7 +301,7 @@ class Games(commands.Cog):
 
 				while True:
 					try:
-						imput = await self.client.wait_for('raw_reaction_add', timeout=30)
+						imput = await self.client.wait_for('raw_reaction_add', timeout=180)
 					except:
 						return
 
@@ -511,8 +522,11 @@ class Games(commands.Cog):
 					embed = get_embed(stored_answer,waiting_for,stored_lvl,char,mode)
 					waiting_for = True
 					if previous_imput != None:
-						await previous_imput.delete()
-						previous_imput = imput
+						try:
+							await previous_imput.delete()
+							previous_imput = imput
+						except:
+							pass
 					else:
 						previous_imput = imput
 				

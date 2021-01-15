@@ -55,6 +55,14 @@ yesno_msg=[
 	'unthinkable',
 ]
 
+humph_msg=[
+	'baka',
+	'who said that?',
+	"😡",
+	'eehhh??',
+	'man',
+]
+
 choosen_msg =[]
 
 def add_in(msg,keyname):
